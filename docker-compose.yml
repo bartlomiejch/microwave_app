@@ -1,0 +1,20 @@
+version: "3"
+services:
+  microwave_app:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --reload
+    environment:
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "password"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - "redis"
+
+  redis:
+    image: redis
+    command: [ "redis-server",  "--requirepass", "password" ]
+    ports:
+      - "6379:6379"
