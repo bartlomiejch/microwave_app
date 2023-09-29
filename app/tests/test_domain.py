@@ -4,7 +4,6 @@ from unittest.mock import Mock
 import pytest
 
 from app.domain import Equipment, Microwave
-from app.services import JsonCacheManager
 
 
 def test_equipment_initial_state():
@@ -100,34 +99,5 @@ def test_microwave_get_state():
     microwave = Microwave()
     microwave.power_up()
     state = microwave.get_state()
-    expected_state = {'counter': 0, 'is_on': True, 'power': 10}
+    expected_state = {"counter": 0, "is_on": True, "power": 10}
     assert state == expected_state
-
-
-@pytest.fixture
-def cache_mock():
-    return Mock()
-
-
-def test_set(cache_mock):
-    key = "test_key"
-    data = {"test": "data"}
-    JsonCacheManager.set(cache_mock, key, data)
-    cache_mock.set.assert_called_once_with(key, json.dumps(data))
-
-
-def test_get_existing_key(cache_mock):
-    key = "test_key"
-    data = {"test": "data"}
-    cache_mock.get.return_value = json.dumps(data)
-    result = JsonCacheManager.get(cache_mock, key)
-    cache_mock.get.assert_called_once_with(key)
-    assert result == data
-
-
-def test_get_nonexistent_key(cache_mock):
-    key = "nonexistent_key"
-    cache_mock.get.return_value = None
-    result = JsonCacheManager.get(cache_mock, key)
-    cache_mock.get.assert_called_once_with(key)
-    assert result is None

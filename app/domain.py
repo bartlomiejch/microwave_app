@@ -82,7 +82,4 @@ class Microwave(Equipment):
         return self.message
 
     def get_state(self):
-        return {"power": self.power,
-                "counter": self.counter,
-                "is_on": self.is_on}
-
+        return {"power": self.power, "counter": self.counter, "is_on": self.is_on}
